@@ -1,0 +1,55 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: 100vh;
+  grid-template-areas: "sidebar main";
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background: var(--blue-blue, #0071e3);
+  padding: 1rem;
+}
+
+.main {
+  grid-area: main;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 4fr;
+  grid-template-areas:
+    "nav"
+    "contribution";
+}
+
+.nav {
+  grid-area: nav;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: violet;
+}
+
+.contribution_container {
+  grid-area: contribution;
+  background-color: yellowgreen;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: "form contributions";
+}
+
+form {
+  grid-area: form;
+  background-color: yellow;
+}
+
+.contributions {
+  grid-area: contributions;
+  background-color: red;
+}
