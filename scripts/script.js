@@ -1,14 +1,16 @@
 "use strict";
 
-const contributions = document.querySelector(".contributions"),
-  newBookBtn = document.querySelector(".new-book-btn"),
-  submitBtn = document.querySelector(".submit-btn"),
-  deleteBtn = document.querySelector(".delete-btn"),
-  bookList = document.querySelector(".book-list"),
-  loginForm = document.getElementById("loginForm"),
-  overLay = document.querySelector(".over-lay"),
-  readBtn = document.querySelectorAll(".read"),
-  form = document.querySelector("form");
+const elements = {
+  contributions: document.querySelector(".contributions"),
+  newBookBtn: document.querySelector(".new-book-btn"),
+  submitBtn: document.querySelector(".submit-btn"),
+  deleteBtn: document.querySelector(".delete-btn"),
+  bookList: document.querySelector(".book-list"),
+  loginForm: document.getElementById("loginForm"),
+  overLay: document.querySelector(".over-lay"),
+  readBtn: document.querySelectorAll(".read"),
+  form: document.querySelector("form"),
+};
 
 const myLibrary = [];
 
@@ -27,65 +29,70 @@ function addBookToLibrary(book) {
   myLibrary.push(book);
 }
 
-function displayBooks() {
-  bookList.textContent = "";
+function createCard(book) {
+  const card = document.createElement("div");
+  card.classList.add("card");
 
-  myLibrary.forEach((book) => {
-    const card = document.createElement("div");
-    const bookName = document.createElement("h3");
-    const authorName = document.createElement("h4");
-    const pages = document.createElement("p");
-    const status = document.createElement("button");
-    const deleteBtn = document.createElement("button");
+  const elements = {
+    bookName: createAndAppend("h3", book.title, card),
+    authorName: createAndAppend("h4", book.author, card),
+    pages: createAndAppend("p", `Pages: ${book.pages}`, card),
+    status: createAndAppend("button", book.read, card, ["read"]),
+    deleteBtn: createAndAppend("button", "Delete", card, ["delete-btn", "btn"]),
+  };
 
-    bookName.textContent = book.title;
-    authorName.textContent = book.author;
-    pages.textContent = `Pages: ${book.pages}`;
-    status.textContent = book.read;
-    deleteBtn.textContent = "Delete";
-    deleteBtn.classList.add("delete-btn", "btn");
+  elements.status.addEventListener("click", () => {
+    book.read = book.read === "Read" ? "Not Read" : "Read";
+    displayBooks();
+  });
 
-    card.classList.add("card");
-    status.classList.add("read");
-    card.append(bookName, authorName, pages, status, deleteBtn);
-
-    bookList.append(card);
-
-    status.addEventListener("click", () => {
-      book.read = book.read === "Read" ? "Not Read" : "Read";
+  elements.deleteBtn.addEventListener("click", () => {
+    const bookIndex = myLibrary.indexOf(book);
+    if (bookIndex !== -1) {
+      myLibrary.splice(bookIndex, 1);
       displayBooks();
-    });
+    }
+  });
 
-    deleteBtn.addEventListener("click", () => {
-      const bookIndex = myLibrary.indexOf(book);
-      if (bookIndex !== -1) {
-        myLibrary.splice(bookIndex, 1);
-        displayBooks();
-      }
-    });
+  return card;
+}
+
+function createAndAppend(tag, text, parent, classes = []) {
+  const element = document.createElement(tag);
+  element.textContent = text;
+  classes.forEach((className) => element.classList.add(className));
+  parent.appendChild(element);
+  return element;
+}
+
+function displayBooks() {
+  elements.bookList.innerHTML = "";
+  myLibrary.forEach((book) => {
+    const card = createCard(book);
+    elements.bookList.appendChild(card);
   });
 }
 
 function toggleModal() {
-  form.classList.toggle("modal");
-  overLay.classList.toggle("hidden");
+  elements.form.classList.toggle("modal");
+  elements.overLay.classList.toggle("hidden");
 }
 
-newBookBtn.addEventListener("click", toggleModal);
+elements.newBookBtn.addEventListener("click", toggleModal);
 
-loginForm.addEventListener("submit", (e) => {
+elements.loginForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  let bookname = document.getElementById("book");
-  let author = document.getElementById("author");
-  let pages = document.getElementById("pages");
-  let status = document.getElementById("read");
-  let read = status.checked ? "Read" : "Not Read";
+  const bookname = document.getElementById("book");
+  const author = document.getElementById("author");
+  const pages = document.getElementById("pages");
+  const status = document.getElementById("read");
+  const read = status.checked ? "Read" : "Not Read";
 
-  if (bookname.value == "" || author.value == "") {
+  if (bookname.value === "" || author.value === "") {
     alert("Ensure you input a value in input fields!");
   } else {
-    let newBook = new Book(bookname.value, author.value, pages.value, read);
+    const newBook = new Book(bookname.value, author.value, pages.value, read);
     addBookToLibrary(newBook);
 
     displayBooks();
@@ -98,15 +105,15 @@ loginForm.addEventListener("submit", (e) => {
   }
 });
 
-overLay.addEventListener("click", toggleModal);
+elements.overLay.addEventListener("click", toggleModal);
 
-readBtn.forEach((btn) => {
+elements.readBtn.forEach((btn) => {
   btn.addEventListener("click", () => {
     btn.textContent = btn.textContent === "Read" ? "Not Read" : "Read";
   });
 });
 
-deleteBtn.addEventListener("click", () => {
+elements.deleteBtn.addEventListener("click", () => {
   myLibrary.pop();
   displayBooks();
 });
