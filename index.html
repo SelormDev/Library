@@ -10,23 +10,45 @@
 
 <body>
     <div class="container">
-        <div class="sidebar"></div>
-        <div class="main">
-            <div class="nav"></div>
-            <div class="contribution_container">
-                <form action="post">
-                    <label for="book">Book Name</label>
-                    <input type="text" name="book" id="book">
-                    <label for="author">Author Name</label>
-                    <input type="text" name="author" id="author">
-                    <label for="pages">Pages</label>
-                    <input type="number" name="pages" id="pages">
-                    <input type="button" value="Submit">
-                </form>
-                <div class="contributions"></div>
+        <header class="header">
+            <h1>Library</h1>
+            <button class="btn">Log in</button>
+        </header>
+
+        <div class="btn-container">
+            <button class="btn new-book-btn">Add New Book</button>
+        </div>
+
+        <div class="book-list">
+            <div class="card">
+
+                <h3>Sea Saw King</h3>
+                <h4>Kojo Nkansah</h4>
+
+                <p>Pages: 100</p>
+                <button class="read">Read</button>
+                <button class="btn delete-btn">Delete</button>
+
             </div>
         </div>
+
+
+        <!-- <dialog class="form-container"> -->
+        <form action="" class="modal" id="loginForm" method="get">
+            <label for="book">Book Name</label>
+            <input type="text" id="book" id="book">
+            <label for="author">Author Name</label>
+            <input type="text" id="author" id="author">
+            <label for="pages">Pages</label>
+            <input type="number" id="pages" id="pages">
+            <label for="read"><input type="checkbox" id="read"> Read</label>
+
+            <button class="btn submit-btn">Submit</button>
+        </form>
+        <!-- </dialog> -->
+        <div class="over-lay hidden"></div>
     </div>
+    <script src="scripts/script.js"></script>
 </body>
 
 </html>
